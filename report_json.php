@@ -31,7 +31,7 @@ NONONO 㗎';
 try {
     if (empty($_POST['jsonData'])) throw new Exception('jsonContent is empty()');
 
-    $jsonObj = json_decode($_POST['jsonContent']);
+    $jsonObj = json_decode($_POST['jsonData']);
 
     $db = new PDO('mysql:host=localhost;dbname=ibeacon_traces', 'ibeacon', '1Beac0n');
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
