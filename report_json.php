@@ -29,13 +29,9 @@ NONONO 㗎';
 }
 
 try {
-    $selfMac = $_POST["selfMac"];
-    $uuid = $_POST["uuid"];
-    $major = (int)$_POST["major"];
-    $minor = (int)$_POST["minor"];
-    $mac = $_POST["mac"];
-    $txpower = (int)$_POST["txpower"];
-    $rssi = (int)$_POST["rssi"];
+    if (empty($_POST['jsonContent'])) throw new Exception('jsonContent is empty()');
+
+    $jsonObj = json_decode($_POST['jsonContent']);
 
     $db = new PDO('mysql:host=localhost;dbname=ibeacon_traces', 'ibeacon', '1Beac0n');
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -44,14 +40,16 @@ try {
     $db->beginTransaction();
 
     $stmt = $db->prepare("INSERT INTO traces(selfMac,`uuid`,major,minor,mac,txpower,rssi) VALUES(:selfMac,:uuid,:major,:minor,:mac,:txpower,:rssi)");
-    $stmt->execute(array(
-        ':selfMac' => hexdec($selfMac),
-        ':uuid' => pack("H*", $uuid),
-        ':major' => $major,
-        ':minor' => $minor,
-        ':mac' => hexdec($mac),
-        ':txpower' => $txpower,
-        ':rssi' => $rssi));
+    foreach ($jsonObj as $el) {
+        $stmt->execute(array(
+            ':selfMac' => hexdec($el->selfMac),
+            ':uuid' => pack("H*", $el->uuid),
+            ':major' => $el->major,
+            ':minor' => $el->minor,
+            ':mac' => hexdec($el->mac),
+            ':txpower' => $el->txpower,
+            ':rssi' => $el->rssi));
+    }
 
     $db->commit();
 
