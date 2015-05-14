@@ -37,7 +37,7 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-    $db->beginTransaction();
+    if(!$db->beginTransaction()) throw new Exception('transcational operation is not supported');
 
     $stmt = $db->prepare("INSERT INTO traces(selfMac,`uuid`,major,minor,mac,txpower,rssi) VALUES(:selfMac,:uuid,:major,:minor,:mac,:txpower,:rssi)");
     foreach ($jsonObj as $el) {
@@ -54,7 +54,7 @@ try {
     $db->commit();
 
     $affected_rows = $stmt->rowCount();
-    if ($affected_rows < 1) http_response_code(500);
+    if ($affected_rows != count($jsonObj)) http_response_code(500);
     else echo $affected_rows;
 } catch (Exception $e) {
     http_response_code(500);
