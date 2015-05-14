@@ -33,7 +33,7 @@ try {
 
     $jsonObj = json_decode($_POST['jsonData']);
 
-    $db = new PDO('mysql:host=localhost;dbname=ibeacon_traces', 'ibeacon', '1Beac0n');
+    $db = new PDO('mysql:host=moodle-db.cndunymmm6cz.ap-southeast-1.rds.amazonaws.com:3306;dbname=2014fyp_ips', '2014fyp_ips', 'alanpo2593');
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
