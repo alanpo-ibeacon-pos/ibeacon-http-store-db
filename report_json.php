@@ -29,7 +29,7 @@ NONONO 㗎';
 }
 
 try {
-    if (empty($_POST['jsonContent'])) throw new Exception('jsonContent is empty()');
+    if (empty($_POST['jsonData'])) throw new Exception('jsonContent is empty()');
 
     $jsonObj = json_decode($_POST['jsonContent']);
 
