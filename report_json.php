@@ -39,9 +39,10 @@ try {
 
     if(!$db->beginTransaction()) throw new Exception('transcational operation is not supported');
 
-    $stmt = $db->prepare("INSERT INTO traces(selfMac,`uuid`,major,minor,mac,txpower,rssi) VALUES(:selfMac,:uuid,:major,:minor,:mac,:txpower,:rssi)");
+    $stmt = $db->prepare("INSERT INTO traces(datetime, selfMac,`uuid`,major,minor,mac,txpower,rssi) VALUES(:datetime, :selfMac,:uuid,:major,:minor,:mac,:txpower,:rssi)");
     foreach ($jsonObj as $el) {
         $stmt->execute(array(
+            ':datetime' => $el->datetime,
             ':selfMac' => hexdec($el->selfMac),
             ':uuid' => pack("H*", $el->uuid),
             ':major' => $el->major,
